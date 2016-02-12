@@ -19,7 +19,7 @@ PORT_PUB=9000
 PORT_DOCKER=8080
 
 # Volumes
-VOL="/vol"
+VOL="/home"
 VOL_PERM="rw"
 
 
