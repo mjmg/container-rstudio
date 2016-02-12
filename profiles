@@ -1,0 +1,10 @@
+[*]
+cpu-affinity = 1-8
+max-processes = 1000
+max-open-files = 1024
+max-memory-mb = 24576
+
+[kpeters]
+max-memory-mb = 32768
+r-version = /usr/bin/R
+
