@@ -59,29 +59,28 @@ RUN R -e "update.packages(repos='https://cran.rstudio.com/', ask=F)"
 ADD rserver.conf /etc/rstudio/rserver.conf
 ADD rsession.conf /etc/rstudio/rsession.conf
 RUN echo "#!/bin/sh" > /usr/sbin/rstudio-server.sh
-RUN echo "/usr/lib/rstudio-server/bin/rserver" >> /usr/sbin/rstudio-server.sh
+RUN echo "/usr/lib/rstudio-server/bin/rserver --server-daemonize=0" >> /usr/sbin/rstudio-server.sh
 RUN chmod +x /usr/sbin/rstudio-server.sh
 
 
 
 # HACK: Infrastructure specific
-RUN apt-get -y install ldap-utils libpam-ldapd libnss-ldapd libldap2-dev nslcd
-WORKDIR /
-ADD etc/ldap.conf /etc/ldap.conf
-ADD etc/ldap /etc/ldap
-ADD etc/pam.d /etc/pam.d
-ADD etc/nsswitch.conf /etc/nsswitch.conf
-ADD etc/nslcd.conf /etc/nslcd.conf
-RUN chmod 660 /etc/nslcd.conf
-ADD etc/ssl/certs/IPB* /etc/ssl/certs/
-ADD etc/security /etc/security
-RUN update-rc.d nslcd enable
+#RUN apt-get -y install ldap-utils libpam-ldapd libnss-ldapd libldap2-dev nslcd
+#WORKDIR /
+#ADD etc/ldap.conf /etc/ldap.conf
+#ADD etc/ldap /etc/ldap
+#ADD etc/pam.d /etc/pam.d
+#ADD etc/nsswitch.conf /etc/nsswitch.conf
+#ADD etc/nslcd.conf /etc/nslcd.conf
+#RUN chmod 660 /etc/nslcd.conf
+#ADD etc/ssl/certs/IPB* /etc/ssl/certs/
+#RUN update-rc.d nslcd enable
 
-RUN echo "#!/bin/sh" > /usr/sbin/rstudio-server.sh
-RUN echo "service nslcd start" >> /usr/sbin/rstudio-server.sh
-RUN echo "sleep 10" >> /usr/sbin/rstudio-server.sh
-RUN echo "/usr/lib/rstudio-server/bin/rserver" >> /usr/sbin/rstudio-server.sh
-RUN chmod +x /usr/sbin/rstudio-server.sh
+#RUN echo "#!/bin/sh" > /usr/sbin/rstudio-server.sh
+#RUN echo "service nslcd start" >> /usr/sbin/rstudio-server.sh
+#RUN echo "sleep 10" >> /usr/sbin/rstudio-server.sh
+#RUN echo "/usr/lib/rstudio-server/bin/rserver --server-daemonize=0" >> /usr/sbin/rstudio-server.sh
+#RUN chmod +x /usr/sbin/rstudio-server.sh
 
 
 
@@ -90,5 +89,5 @@ EXPOSE 8080
 
 # Define Entry point script
 WORKDIR /
-ENTRYPOINT ["/usr/sbin/rstudio-server.sh"]
+ENTRYPOINT ["/bin/sh","/usr/sbin/rstudio-server.sh"]
 
