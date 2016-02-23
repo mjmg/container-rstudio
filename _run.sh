@@ -19,13 +19,13 @@ PORT_PUB=9000
 PORT_DOCKER=8080
 
 # Volumes
-VOL="/home"
-VOL_PERM="rw"
+VOL1="/home:/home:rw"
+VOL2="/mnt:/mnt:ro"
 
 
 
 # Run docker
-docker run --publish=${PORT_PUB}:${PORT_DOCKER} --log-driver=syslog --volume="${VOL}:${VOL}:${VOL_PERM}" --cpu-shares=$CPU_SHARES --cpuset-cpus=$CPU_SETS --cpuset-mems=$CPU_MEMS --memory=$MEM --name="${NAME}-run" -i -t -d $NAME
+docker run --publish=${PORT_PUB}:${PORT_DOCKER} --log-driver=syslog --volume="${VOL1}" --volume="${VOL2}" --cpu-shares=$CPU_SHARES --cpuset-cpus=$CPU_SETS --cpuset-mems=$CPU_MEMS --memory=$MEM --name="${NAME}-run" -i -t -d $NAME
 
 
 

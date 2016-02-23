@@ -12,9 +12,9 @@ ENV PATH="/usr/local/bin/:/usr/local/sbin:/usr/bin:/usr/sbin:/usr/X11R6/bin:/bin
 ENV PKG_CONFIG_PATH="/usr/lib64/pkgconfig:/usr/lib/pkgconfig:/usr/local/lib64/pkgconfig:/usr/local/lib/pkgconfig"
 ENV LD_LIBRARY_PATH="/usr/lib64:/usr/lib:/usr/local/lib64:/usr/local/lib"
 
-ENV PACK_R="cba devtools eigenfaces extrafont FactoMineR ggplot2 Hmisc Matrix matrixStats plotly plotrix rsm rCharts RUnit squash tools vegan xslx"
+ENV PACK_R="abind BH cba curl devtools eigenfaces extrafont FactoMineR geometry ggplot2 Hmisc httr magic Matrix matrixStats memoise plotly plotrix R6 rCharts Rcpp rmarkdown rsm rstudioapi RUnit squash tools vegan xslx"
 ENV PACK_BIOC="mtbls2"
-ENV PACK_GITHUB="glibiseller/IPO sneumann/geoRge"
+ENV PACK_GITHUB="dragua/xlsx glibiseller/IPO sneumann/geoRge vbonhomme/Momocs vbonhomme/eigenfaces"
 
 
 
@@ -64,7 +64,7 @@ RUN R CMD javareconf
 RUN for PACK in $PACK_R; do R -e "install.packages(\"$PACK\", repos='https://cran.rstudio.com/')"; done
 
 # Install metabolomics R packages from Bioconductor
-RUN R -e "source('https://bioconductor.org/biocLite.R'); biocLite(\"BiocInstaller\", dep=T, ask=F)"
+RUN R -e "source('https://bioconductor.org/biocLite.R'); biocLite(\"BiocInstaller\", dep=TRUE, ask=FALSE)"
 ADD installFromBiocViews.R /tmp/installFromBiocViews.R
 ADD xinitrc /root/.xinitrc
 RUN chmod +x /root/.xinitrc
@@ -74,10 +74,10 @@ RUN xinit -- /usr/bin/Xvfb $DISPLAY -screen 0 800x600x16 -dpi 75 -nolisten tcp -
 # will be RUN in .xinitrc: xterm -display $DISPLAY -e R -f /tmp/installFromBiocViews.R
 
 # Install other Bioconductor packages
-RUN for PACK in $PACK_BIOC; do R -e "library(BiocInstaller); biocLite(\"$PACK\", ask=F)"; done
+RUN for PACK in $PACK_BIOC; do R -e "library(BiocInstaller); biocLite(\"$PACK\", ask=FALSE)"; done
 
 # Install other R packages from source
-RUN for PACK in $PACK_GITHUB; do R -e "library('devtools'); install_github(\"$PACK\")"; done
+RUN for PACK in $PACK_GITHUB; do R -e "library('devtools'); install_github(\"$PACK\", build_vignettes=TRUE)"; done
 
 # Update R packages
 RUN R -e "update.packages(repos='https://cran.rstudio.com/', ask=F)"
