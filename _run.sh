@@ -24,26 +24,6 @@ VOL_PERM="rw"
 
 
 
-# Prepare docker
-#docker info
-#docker pull ubuntu
-
-# HACK Workaround: needed to get infrastructure stuff outside of docker context to work
-#PWD="$(pwd)"
-#mkdir -p etc
-#alias cp='cp'
-#cp -r -f /etc/ldap.conf etc/ldap.conf
-#cp -r -f /etc/ldap etc/ldap
-#cp -r -f /etc/pam.d etc/pam.d
-#cp -r -f /etc/nsswitch.conf etc/nsswitch.conf
-#su -c "cp -r -f /etc/nslcd.conf etc/nslcd.conf"
-#su -c "chmod 666 etc/nslcd.conf"
-#mkdir -p etc/ssl/certs
-#cp -r -f /etc/ssl/certs/I* etc/ssl/certs/
-
-# Build docker
-docker build --rm=true --cpu-shares=$CPU_SHARES --cpuset-cpus=$CPU_SETS --cpuset-mems=$CPU_MEMS --memory=$MEM --tag=$NAME .
-
 # Run docker
 docker run --publish=${PORT_PUB}:${PORT_DOCKER} --log-driver=syslog --volume="${VOL}:${VOL}:${VOL_PERM}" --cpu-shares=$CPU_SHARES --cpuset-cpus=$CPU_SETS --cpuset-mems=$CPU_MEMS --memory=$MEM --name="${NAME}-run" -i -t -d $NAME
 

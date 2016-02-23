@@ -13,6 +13,7 @@ ENV PKG_CONFIG_PATH="/usr/lib64/pkgconfig:/usr/lib/pkgconfig:/usr/local/lib64/pk
 ENV LD_LIBRARY_PATH="/usr/lib64:/usr/lib:/usr/local/lib64:/usr/local/lib"
 
 ENV PACK_R="cba devtools eigenfaces extrafont FactoMineR ggplot2 Hmisc Matrix matrixStats plotly plotrix rsm rCharts RUnit squash tools vegan xslx"
+ENV PACK_BIOC="mtbls2"
 ENV PACK_GITHUB="glibiseller/IPO sneumann/geoRge"
 
 
@@ -72,7 +73,10 @@ RUN dd if=/dev/urandom count=1 | sha256sum | sed -e "s/^/add $DISPLAY . /" | sed
 RUN xinit -- /usr/bin/Xvfb $DISPLAY -screen 0 800x600x16 -dpi 75 -nolisten tcp -audit 4 -ac -auth /root/.Xauthority 1>&2 2>/dev/null
 # will be RUN in .xinitrc: xterm -display $DISPLAY -e R -f /tmp/installFromBiocViews.R
 
-# Install other R packages
+# Install other Bioconductor packages
+RUN for PACK in $PACK_BIOC; do R -e "library(BiocInstaller); biocLite(\"$PACK\", ask=F)"; done
+
+# Install other R packages from source
 RUN for PACK in $PACK_GITHUB; do R -e "library('devtools'); install_github(\"$PACK\")"; done
 
 # Update R packages
