@@ -14,7 +14,7 @@ ENV LD_LIBRARY_PATH="/usr/lib64:/usr/lib:/usr/local/lib64:/usr/local/lib"
 
 ENV PACK_R="abind BH cba curl devtools eigenfaces extrafont FactoMineR geometry ggplot2 Hmisc httr magic Matrix matrixStats memoise plotly plotrix R6 rCharts Rcpp rmarkdown rsm rstudioapi RUnit squash tools vegan xslx"
 ENV PACK_BIOC="mtbls2"
-ENV PACK_GITHUB="dragua/xlsx glibiseller/IPO sneumann/geoRge vbonhomme/Momocs vbonhomme/eigenfaces"
+ENV PACK_GITHUB="dragua/xlsx glibiseller/IPO jcapelladesto/geoRge vbonhomme/Momocs vbonhomme/eigenfaces"
 
 
 
@@ -77,7 +77,10 @@ RUN xinit -- /usr/bin/Xvfb $DISPLAY -screen 0 800x600x16 -dpi 75 -nolisten tcp -
 RUN for PACK in $PACK_BIOC; do R -e "library(BiocInstaller); biocLite(\"$PACK\", ask=FALSE)"; done
 
 # Install other R packages from source
-RUN for PACK in $PACK_GITHUB; do R -e "library('devtools'); install_github(\"$PACK\", build_vignettes=TRUE)"; done
+RUN for PACK in $PACK_GITHUB; do R -e "library('devtools'); install_github(\"$PACK\")"; done
+
+# Install eigenfaces from source
+RUN R -e "library('devtools'); library('pcaMethods'); install_github(\"vbonhomme/Momocs\"); library('Momocs'); install_github(\"vbonhomme/eigenfaces\")"
 
 # Update R packages
 RUN R -e "update.packages(repos='https://cran.rstudio.com/', ask=F)"

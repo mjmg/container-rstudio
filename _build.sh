@@ -4,10 +4,10 @@
 NAME="rstudio-server"
 
 # CPU options
-CPU_SHARES="8"
-CPU_SETS="0-$[$CPU_SHARES-1]"
-CPU_MEMS="0"
-MEM="24g"
+CPU_SHARES="--cpu-shares=8"
+CPU_SETS="--cpuset-cpus=0-$[$CPU_SHARES-1]"
+CPU_MEMS="--cpuset-mems=0"
+MEM="--memory=24g"
 
 
 
@@ -29,5 +29,5 @@ MEM="24g"
 #cp -r -f /etc/ssl/certs/I* etc/ssl/certs/
 
 # Build docker
-docker build --rm=true --cpu-shares=$CPU_SHARES --cpuset-cpus=$CPU_SETS --cpuset-mems=$CPU_MEMS --memory=$MEM --tag=$NAME .
+docker build --rm=true $CPU_SHARES $CPU_SETS $CPU_MEMS $MEM --tag=$NAME .
 

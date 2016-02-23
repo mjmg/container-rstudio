@@ -9,23 +9,22 @@
 NAME="rstudio-server"
 
 # CPU options
-CPU_SHARES="8"
-CPU_SETS="0-$[$CPU_SHARES-1]"
-CPU_MEMS="0"
-MEM="24g"
+#CPU_SHARES="--cpu-shares=8"
+#CPU_SETS="--cpuset-cpus=0-$[$CPU_SHARES-1]"
+#CPU_MEMS="--cpuset-mems=0"
+#MEM="--memory=24g"
 
 # Ports
 PORT_PUB=9000
 PORT_DOCKER=8080
 
 # Volumes
-VOL1="/home:/home:rw"
-VOL2="/mnt:/mnt:ro"
+VOL="--volume=/home:/home:rw --volume=/mnt:/mnt:ro"
 
 
 
 # Run docker
-docker run --publish=${PORT_PUB}:${PORT_DOCKER} --log-driver=syslog --volume="${VOL1}" --volume="${VOL2}" --cpu-shares=$CPU_SHARES --cpuset-cpus=$CPU_SETS --cpuset-mems=$CPU_MEMS --memory=$MEM --name="${NAME}-run" -i -t -d $NAME
+docker run --publish=${PORT_PUB}:${PORT_DOCKER} --log-driver=syslog $VOL $CPU_SHARES $CPU_SETS $CPU_MEMS $MEM --name="${NAME}-run" -i -t -d $NAME
 
 
 
@@ -52,6 +51,9 @@ docker run --publish=${PORT_PUB}:${PORT_DOCKER} --log-driver=syslog --volume="${
 # Delete container and image
 #docker rm ${NAME}-run
 #docker rmi ${NAME}
+
+# Delete exited containers
+#docker rm $(docker ps -a -f status=exited | grep -v CONTAINER\ ID | awk '{print $1}')
 
 # Delete intermediate/untagged images
 #docker rmi $(docker images | grep '^<none>' | awk '{print $3}')
