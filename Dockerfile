@@ -12,9 +12,9 @@ ENV PATH="/usr/local/bin/:/usr/local/sbin:/usr/bin:/usr/sbin:/usr/X11R6/bin:/bin
 ENV PKG_CONFIG_PATH="/usr/lib64/pkgconfig:/usr/lib/pkgconfig:/usr/local/lib64/pkgconfig:/usr/local/lib/pkgconfig"
 ENV LD_LIBRARY_PATH="/usr/lib64:/usr/lib:/usr/local/lib64:/usr/local/lib"
 
-ENV PACK_R="abind BH cba curl devtools eigenfaces extrafont FactoMineR geometry ggplot2 Hmisc httr magic Matrix matrixStats memoise plotly plotrix R6 rCharts Rcpp rmarkdown rsm rstudioapi RUnit squash tools vegan xslx"
-ENV PACK_BIOC="mtbls2"
-ENV PACK_GITHUB="dragua/xlsx glibiseller/IPO jcapelladesto/geoRge vbonhomme/Momocs vbonhomme/eigenfaces"
+ENV PACK_R="abind BH cba curl dendextend devtools eigenfaces extrafont FactoMineR geometry ggplot2 Hmisc httr klaR magic Matrix matrixStats mda memoise plotly plotrix R6 rCharts Rcpp rmarkdown rsm rstudioapi RUnit squash tools vegan xslx"
+ENV PACK_BIOC="mtbls2 Risa"
+ENV PACK_GITHUB="dragua/xlsx glibiseller/IPO jcapelladesto/geoRge rstudio/rmarkdown vbonhomme/Momocs vbonhomme/eigenfaces"
 
 
 
@@ -96,7 +96,11 @@ RUN chmod +x /usr/sbin/rstudio-server.sh
 
 
 
-# HACK: Infrastructure specific
+# Infrastructure specific
+RUN groupadd -g 9999 -f rstudio
+RUN useradd -d /home/rstudio -m -g rstudio -u 9999 -s /bin/bash rstudio
+RUN echo 'rstudio:docker' | chpasswd
+
 #RUN apt-get -y install ldap-utils libpam-ldapd libnss-ldapd libldap2-dev nslcd
 #WORKDIR /
 #ADD etc/ldap.conf /etc/ldap.conf
