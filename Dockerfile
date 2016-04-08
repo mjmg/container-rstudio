@@ -2,7 +2,7 @@ FROM ubuntu:trusty
 
 MAINTAINER Kristian Peters <kpeters@ipb-halle.de>
 
-LABEL Description="Install RStudio Server + relevant R & Bioconductor packages in Docker."
+LABEL Description="Install RStudio Server + important R & Bioconductor packages in Docker."
 
 
 
