@@ -2,7 +2,7 @@ FROM ubuntu:trusty
 
 MAINTAINER Kristian Peters <kpeters@ipb-halle.de>
 
-LABEL Description="RStudio Server + important R & Bioconductor packages."
+LABEL Description="RStudio Server + all the important R & Bioconductor packages."
 
 
 
@@ -14,7 +14,7 @@ ENV LD_LIBRARY_PATH="/usr/lib64:/usr/lib:/usr/local/lib64:/usr/local/lib"
 
 ENV PACK_R="abind BH cba curl dendextend devtools doSNOW eigenfaces extrafont FactoMineR geometry ggplot2 Hmisc httr klaR kohonen magic Matrix matrixStats mda memoise plotly plotrix R6 rCharts Rcpp rmarkdown rsm rstudioapi RUnit squash tools vegan xslx"
 ENV PACK_BIOC="mtbls2 Risa"
-ENV PACK_GITHUB="dragua/xlsx glibiseller/IPO jcapelladesto/geoRge rstudio/rmarkdown"
+ENV PACK_GITHUB="dragua/xlsx glibiseller/IPO jcapelladesto/geoRge rstudio/rmarkdown sneumann/MetShot"
 
 
 
@@ -84,6 +84,12 @@ RUN R -e "library('devtools'); install.packages("batman", repos="http://R-Forge.
 
 # Update R packages
 RUN R -e "update.packages(repos='https://cran.rstudio.com/', ask=F)"
+
+# Install SIRIUS
+RUN mkdir /usr/lib/sirius
+WORKDIR /usr/lib/sirius
+RUN wget -O /tmp/sirius.zip 'https://bio.informatik.uni-jena.de/artifactory/libs-releases-local/sirius_3_1_3_linux64.zip'
+RUN unzip /tmp/sirius.zip
 
 
 
