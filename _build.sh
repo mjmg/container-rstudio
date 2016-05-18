@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Name
-NAME="rstudio-server"
+NAME="rstudio"
 
 # CPU options
 CPU_SHARES="--cpu-shares=8"
