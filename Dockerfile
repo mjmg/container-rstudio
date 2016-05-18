@@ -80,7 +80,7 @@ RUN for PACK in $PACK_BIOC; do R -e "library(BiocInstaller); biocLite(\"$PACK\",
 RUN for PACK in $PACK_GITHUB; do R -e "library('devtools'); install_github(\"$PACK\")"; done
 
 # Install BATMAN
-RUN R -e "library('devtools'); install.packages("batman", repos="http://R-Forge.R-project.org")"
+RUN R -e "library('devtools'); install.packages('batman', repos='http://R-Forge.R-project.org')"
 
 # Update R packages
 RUN R -e "update.packages(repos='https://cran.rstudio.com/', ask=F)"
