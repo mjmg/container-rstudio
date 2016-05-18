@@ -1,8 +1,8 @@
 FROM ubuntu:trusty
 
-MAINTAINER Kristian Peters <kpeters@ipb-halle.de>
+MAINTAINER PhenoMeNal-H2020 Project <phenomenal-h2020-users@googlegroups.com>
 
-LABEL Description="RStudio Server + all the important R & Bioconductor packages."
+LABEL Description="RStudio intended to be used within Metabolomics research. Includes all relevant Bioconductor packages + metabolomics related R packages that are not part of Bioconductor."
 
 
 
